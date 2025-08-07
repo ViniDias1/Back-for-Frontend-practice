@@ -1,36 +1,27 @@
 import { getPocketBaseInstance } from "./pocketBaseInstance";
+import { useRuntimeConfig } from "nitropack/runtime";
+import PocketBase from "pocketbase";
 
-let authPromise = null as Promise<void> | null;
+let authPromise: Promise<void> | null = null;
 
-export async function authPocketBase() {
-  const config = useRuntimeConfig();
-
-  const pocketBaseEmail = config.pocketBaseEmail;
-  const pocketBasePassword = config.pocketBasePassword;
-
+export async function authPocketBase(): Promise<PocketBase> {
+  const { pocketBaseEmail, pocketBasePassword } = useRuntimeConfig();
   const pbInstance = await getPocketBaseInstance();
-  if (!pbInstance.authStore.isValid || pbInstance.authStore.token === "") {
-    if (pbInstance === null) {
-      console.log("PocketBase: Iniciando autenticação...");
-      authPromise = pbInstance
-        .collection("_superusers")
-        .authWithPassword(pocketBaseEmail, pocketBasePassword)
-        .then(() => {
-          console.log("PocketBase: Autenticação bem-sucedida.");
-          authPromise = null;
-        })
-        .catch((err) => {
-          console.error("PocketBase: Erro na autenticação:", err);
-          authPromise = null;
-          throw err;
-        });
-    }
+
+  const isInvalid =
+    !pbInstance.authStore.isValid || !pbInstance.authStore.token;
+
+  if (isInvalid) {
+    authPromise ??= pbInstance
+      .collection("_superusers")
+      .authWithPassword(pocketBaseEmail, pocketBasePassword)
+      .then(() => {})
+      .finally(() => {
+        authPromise = null;
+      });
 
     await authPromise;
-  } else {
-    console.log("PocketBase: Instância já autenticada, reutilizando token.");
   }
 
   return pbInstance;
-    
 }

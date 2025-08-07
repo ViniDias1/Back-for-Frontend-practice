@@ -8,8 +8,7 @@ import { PocketBasePaginatedResponse } from '../interfaces/PocketBasePaginated.i
   providedIn: 'root',
 })
 export class DataService {
-  // private readonly apiUrlMock = 'http://localhost:3001/sabia-paineis';
-  private readonly apiUrl = 'http://localhost:3001/api/sabia-paineis';
+  private readonly apiUrl = 'http://localhost:3000/api/sabia-paineis';
 
   private readonly http = inject(HttpClient);
 
@@ -23,7 +22,5 @@ export class DataService {
     return this.http
       .get<PocketBasePaginatedResponse>(this.apiUrl, { params })
       .pipe(map((response) => response.items as T[]));
-
-    // return this.http.get<T[]>(this.apiUrlMock, { params });
   }
 }

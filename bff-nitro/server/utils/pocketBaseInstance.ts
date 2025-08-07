@@ -2,29 +2,21 @@ import PocketBase from "pocketbase";
 import { useRuntimeConfig } from "nitropack/runtime";
 import { authPocketBase } from "./authPocketBase";
 
-let pbInstance = null as PocketBase | null;
+let pbInstance: PocketBase | null = null;
 
-export async function getPocketBaseInstance() {
-  const config = useRuntimeConfig();
+export async function getPocketBaseInstance(): Promise<PocketBase> {
+  const { pocketBaseUrl } = useRuntimeConfig();
 
-  const pocketbaseUrl = config.pocketBaseUrl;
+  if (!pocketBaseUrl) throw new Error("PocketBase: URL não configurada.");
 
-  if (!pocketbaseUrl) {
-    console.error(
-      "Erro: Variáveis de ambiente do PocketBase não configuradas corretamente."
-    );
-    throw new Error("Configuração do PocketBase incompleta no servidor.");
-  }
-  if (!pbInstance) {
-    pbInstance = new PocketBase(pocketbaseUrl);
-    console.log(`PocketBase: Nova instância criada para ${pocketbaseUrl}`);
-  }
+  pbInstance ??= new PocketBase(pocketBaseUrl);
 
   if (pbInstance.authStore.isValid) {
-    console.log("PocketBase: Instância autenticada, reutilizando token.");
-  } else {
-    pbInstance = await authPocketBase();
+    console.debug("PocketBase: Token válido. Reutilizando instância.");
+    return pbInstance;
   }
-  console.log( pbInstance)
+
+  console.info("PocketBase: Token ausente/inválido. Autenticando...");
+  await authPocketBase();
   return pbInstance;
 }
