@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { debounceTime, finalize, Subject } from 'rxjs';
+import { debounceTime, finalize, shareReplay, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -26,6 +26,7 @@ export class CardComponent implements OnChanges {
   @Input() showinginternetpanels: boolean = false;
 
   loading: boolean = false;
+
   errorMessage: string = '';
   sabiaPaineis: any[] = [];
   searchTerm: string = '';
@@ -34,9 +35,11 @@ export class CardComponent implements OnChanges {
   private readonly dataService = inject(DataService);
 
   constructor() {
-    this.$triggerTime.pipe(debounceTime(300)).subscribe((onlyInternet) => {
-      this.loadPanels(onlyInternet || undefined);
-    });
+    this.$triggerTime
+      .pipe(debounceTime(500), shareReplay(1))
+      .subscribe((onlyInternet) => {
+        this.loadPanels(onlyInternet || undefined);
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

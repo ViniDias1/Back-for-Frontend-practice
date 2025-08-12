@@ -17,10 +17,8 @@
 
       @if (painel.image) {
       <div class="panel-image">
-        <img
-          [src]="'http://localhost:3000/api/files/' + painel.collectionId + '/' + painel.id + '/' + painel.image"
-          alt="{{ painel.title }}"
-        />
+        <img [src]="'http://localhost:3000/api/files/' + painel.collectionId + '/' + painel.id + '/' + painel.image"
+          alt="{{ painel.title }}" />
       </div>
       }
 
@@ -29,9 +27,7 @@
       @if (painel.link && painel.link !== 'Não disponível') {
       <p>
         <strong>Link:</strong>
-        <a [href]="painel.link" target="_blank" class="panel-link"
-          >Acessar Painel</a
-        >
+        <a [href]="painel.link" target="_blank" class="panel-link">Acessar Painel</a>
       </p>
       }
 
