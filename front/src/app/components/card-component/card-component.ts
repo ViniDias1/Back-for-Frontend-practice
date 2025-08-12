@@ -56,7 +56,7 @@ export class CardComponent implements OnChanges {
       .subscribe({
         next: (data) => {
           this.sabiaPaineis = data;
-          this.panelsLoaded.emit(onlyInternet);
+          this.panelsLoaded.emit(!!onlyInternet);
         },
         error: () => {
           this.errorMessage = 'Não foi possível carregar os painéis.';
