@@ -1,4 +1,4 @@
-# Mini-Projeto: Frontend Angular com BFF Nitro e PocketBase
+# Mini-Projeto: Frontend Angular com BFF Nitro e Pockcet
 
 Praticando o uso de BFF (Backend for Frontend) usando novas tecnologias:
 
