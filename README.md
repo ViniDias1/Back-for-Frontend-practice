@@ -14,58 +14,16 @@ Este repositório demonstra a aplicação do padrão **Backend-for-Frontend (BFF
 
 ### Back-for-Frontend-practice/
 
-<br>
-├── frontend-angular      # Aplicação Angular (interface do usuário)
-<br>
-├── bff-nitro             # Backend-for-Frontend com Nitro
-<br>
-├── pb_data/              # Dados utilizados pelo PocketBase
-<br>
-└── db.json               # Fixture inicial do banco de dados
+> <br>
+> ├── frontend-angular     - Aplicação Angular (interface do usuário)
+> <br>
+> ├── bff-nitro           - Backend-for-Frontend com Nitro
+> <br>
+> └── db.json              - Mock inicial do banco de dados
 
 ---
 
-## 🚀 Instruções para rodar o projeto localmente
 
-1. Clone o repositório
-
-git clone https://github.com/dougaandrade/Back-for-Frontend-practice.git
-cd Back-for-Frontend-practice
-
-2. Instale as dependências
-
-# Instalar dependências do Angular
-
-cd frontend-angular
-npm install
-
-# Instalar dependências do BFF
-
-cd ../bff-nitro
-npm install
-
-3. Inicie os serviços
-
-# Iniciar PocketBase
-
-npx pocketbase serve --dir ../pb_data
-
-# Em outro terminal: iniciar o BFF
-
-cd bff-nitro
-npm run dev
-
-# Em outro terminal: iniciar o frontend Angular
-
-cd ../frontend-angular
-npm run start
-
-4. Acesse no navegador
-
-Frontend: http://localhost:4200
-BFF (Nitro): http://localhost:3000
-
----
 
 ## ⚙️ Tecnologias Utilizadas
 
@@ -128,22 +86,6 @@ O padrão **Backend-for-Frontend (BFF)**:
 
 Leia mais:  
 BFF: Backend for Frontend – Bits and Pieces: https://blog.bitsrc.io/bff-pattern-backend-for-frontend-an-introduction-e4fa965128bf
-
----
-
-## 🤝 Contribuição
-
-Sinta-se livre para:
-
-- Abrir **issues**
-- Enviar **pull requests**
-- Criar forks e adaptar o projeto
-
----
-
-## 📄 Licença
-
-Este projeto é open-source, disponível sob a licença MIT.
 
 ---
 
