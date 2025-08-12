@@ -4,4 +4,3 @@ dist
 .nitro
 .cache
 .output
-.env

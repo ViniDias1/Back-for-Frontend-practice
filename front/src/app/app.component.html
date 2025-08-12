@@ -1,90 +1,15 @@
 <!DOCTYPE html>
 <div class="container">
-  <h1>Bem-vindo ao {{ title }}!</h1>
-  @if (errorMessage) {
-  <p class="error-message">
-    {{ errorMessage }}
-  </p>
-  }
+  <card-search (search)="onSearchResult($event)" />
+  <card-button
+    (showAll)="showAllPanels()"
+    (showInternet)="showInternetPanels()"
+    (toggle)="showingInternetPanels = $event"
+  ></card-button>
 
-  <div class="button-group">
-    <button
-      (click)="showAllPanels()"
-      [ngClass]="{ active: !showingInternetPanels }"
-      class="action-button"
-    >
-      Mostrar Todos os Painéis
-    </button>
-    <button
-      (click)="showInternetPanels()"
-      [ngClass]="{ active: showingInternetPanels }"
-      class="action-button"
-    >
-      Mostrar Painéis com Internet Ativada
-    </button>
-  </div>
-
-  @if(sabiaPaineis.length > 0){
-  <div>
-    <h2>Painéis do SABIA:</h2>
-    <div class="panels-list">
-      @for (painel of sabiaPaineis; track painel.id) {
-      <div class="panel-card">
-        <h3>{{ painel.title }}</h3>
-
-        <div class="panel-image">
-          @if (painel.image) {
-          <img
-            [src]="
-              'http://localhost:3000/api/files/' +
-              painel.collectionId +
-              '/' +
-              painel.id +
-              '/' +
-              painel.image
-            "
-            alt="{{ painel.title }}"
-          />
-          }
-        </div>
-
-        <p class="panel-description">{{ painel.description }}</p>
-
-        <p>
-          @if (painel.link) {
-          <strong>Link:</strong>
-          <a [href]="painel.link" target="_blank" class="panel-link">
-            Acessar Painel
-          </a>
-          } @else {
-          <strong>Link:</strong> Não disponível }
-        </p>
-
-        <div class="panel-details">
-          <p>
-            <strong>Acesso Internet:</strong>
-            <span [ngClass]="painel.internet ? 'internet-yes' : 'internet-no'">
-              {{ painel.internet ? "Sim" : "Não" }}
-            </span>
-          </p>
-          <p>
-            <strong>Autenticação Necessária:</strong>
-            {{ painel.authentication ? "Sim" : "Não" }}
-          </p>
-          <p>
-            <strong>Embutível:</strong> {{ painel.embedded ? "Sim" : "Não" }}
-          </p>
-        </div>
-      </div>
-      }
-    </div>
-  </div>
-  }
-  <div>
-    @if (sabiaPaineis.length === 0 && !errorMessage) {
-    <p style="font-style: italic; color: #888">
-      Carregando painéis do SABIA...
-    </p>
-    }
-  </div>
+  <card-component
+    (panelsLoaded)="painelLoader($event)"
+    [filteredPaineis]="filteredPaineis"
+    [showinginternetpanels]="showingInternetPanels"
+  ></card-component>
 </div>

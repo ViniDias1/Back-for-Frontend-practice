@@ -1,4 +1,4 @@
-import { getPocketBaseInstance } from "../utils/pocketbase"; // Importe a função
+import { getPocketBaseInstance } from "../utils/pocketBaseInstance"; // Importe a função
 
 export default defineEventHandler(async (event) => {
   const collectionName = "sabia_paineis";

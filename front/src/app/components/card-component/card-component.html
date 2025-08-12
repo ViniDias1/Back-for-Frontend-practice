@@ -1,0 +1,51 @@
+<div class="container">
+  <!-- Mensagem de carregamento -->
+  @if (loading) {
+  <p class="loading-message">Recarregando painéis...</p>
+  }
+
+  <!-- Mensagem de erro -->
+  @if (errorMessage) {
+  <p class="error-message">{{ errorMessage }}</p>
+  } @if ((filteredPaineis.length > 0 || sabiaPaineis.length > 0) && !loading &&
+  !errorMessage) {
+  <div class="panels-list">
+    @for (painel of (filteredPaineis.length > 0 ? filteredPaineis :
+    sabiaPaineis); track painel.id) {
+    <div class="panel-card">
+      <h3>{{ painel.title }}</h3>
+
+      @if (painel.image) {
+      <div class="panel-image">
+        <img [src]="'http://localhost:3000/api/files/' + painel.collectionId + '/' + painel.id + '/' + painel.image"
+          alt="{{ painel.title }}" />
+      </div>
+      }
+
+      <p class="panel-description">{{ painel.description }}</p>
+
+      @if (painel.link && painel.link !== 'Não disponível') {
+      <p>
+        <strong>Link:</strong>
+        <a [href]="painel.link" target="_blank" class="panel-link">Acessar Painel</a>
+      </p>
+      }
+
+      <div class="panel-details">
+        <p>
+          <strong>Acesso Internet:</strong>
+          <span [ngClass]="painel.internet ? 'internet-yes' : 'internet-no'">
+            {{ painel.internet ? 'Sim' : 'Não' }}
+          </span>
+        </p>
+        <p>
+          <strong>Autenticação Necessária:</strong> {{ painel.authentication ?
+          'Sim' : 'Não' }}
+        </p>
+        <p><strong>Embutível:</strong> {{ painel.embedded ? 'Sim' : 'Não' }}</p>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>

@@ -1,0 +1,39 @@
+.input {
+  font-size: 16px;
+  padding: 10px;
+  display: block;
+  width: 400px;
+  border: none;
+  border-bottom: 1px solid #252525;
+  background: transparent;
+}
+
+.input:focus {
+  outline: none;
+}
+
+label {
+  color: #252525;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+.input:focus ~ label,
+.input:valid ~ label {
+  top: -20px;
+  font-size: 14px;
+  color: var(--yellow);
+}
+
+.label-title-filter {
+  font-size: 1.4rem;
+  color: #252525;
+  font-weight: 600;
+}

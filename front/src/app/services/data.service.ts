@@ -1,15 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'; // Importe HttpParams
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-interface PocketBasePaginatedResponse {
-  page: number;
-  perPage: number;
-  totalPages: number;
-  totalItems: number;
-  items: any[];
-}
+import { PocketBasePaginatedResponse } from '../interfaces/PocketBasePaginated.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,15 +12,30 @@ export class DataService {
 
   private readonly http = inject(HttpClient);
 
+  private readonly cache = new Map<string, Observable<any[]>>();
+
   getSabiaPaineis<T>(onlyInternet?: boolean): Observable<T[]> {
+    const cacheKey = `sabia-paineis-${onlyInternet}`;
+
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey) as Observable<T[]>;
+    }
+
     let params = new HttpParams();
 
     if (onlyInternet !== undefined) {
       params = params.set('internet', onlyInternet.toString());
     }
 
-    return this.http
+    const $newRequest = this.http
       .get<PocketBasePaginatedResponse>(this.apiUrl, { params })
-      .pipe(map((response) => response.items as T[]));
+      .pipe(
+        map((response) => response.items as T[]),
+        shareReplay(1)
+      );
+
+    this.cache.set(cacheKey, $newRequest);
+
+    return $newRequest as Observable<T[]>;
   }
 }

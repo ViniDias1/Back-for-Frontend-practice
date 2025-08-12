@@ -1,5 +1,5 @@
 import { sendProxy } from "h3";
-import { getPocketBaseInstance } from "../../utils/pocketbase";
+import { getPocketBaseInstance } from "../../utils/pocketBaseInstance";
 
 export default defineEventHandler(async (event) => {
   const pb = await getPocketBaseInstance();

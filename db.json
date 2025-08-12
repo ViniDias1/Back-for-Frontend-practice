@@ -1,0 +1,48 @@
+{
+  "sabia-paineis": [
+    {
+      "id": "1",
+      "title": "Painel Solar Residencial",
+      "description": "Ideal para casas e apartamentos.",
+      "image": "residencial.png",
+      "collectionId": "abc123",
+      "link": "https://painel-residencial.com",
+      "internet": true,
+      "authentication": false,
+      "embedded": true
+    },
+    {
+      "id": "2",
+      "title": "Painel Comercial",
+      "description": "Alta performance para empresas.",
+      "image": "comercial.jpg",
+      "collectionId": "def456",
+      "link": "https://painel-comercial.com",
+      "internet": false,
+      "authentication": true,
+      "embedded": false
+    },
+    {
+      "id": "3",
+      "title": "Painel de Internet",
+      "description": "Conectividade via satélite.",
+      "image": "internet.jpg",
+      "collectionId": "ghi789",
+      "link": "https://painel-internet.com",
+      "internet": true,
+      "authentication": true,
+      "embedded": true
+    },
+    {
+      "id": "4",
+      "title": "Painel Sem Link",
+      "description": "Este painel não possui link disponível.",
+      "image": "sem-link.png",
+      "collectionId": "klm000",
+      "link": "Não disponível",
+      "internet": false,
+      "authentication": false,
+      "embedded": true
+    }
+  ]
+}

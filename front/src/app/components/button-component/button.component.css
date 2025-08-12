@@ -1,0 +1,21 @@
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.action-button {
+  padding: 8px 16px;
+  border: none;
+  background: #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.action-button.active,
+.action-button:hover {
+  background: #1976d2;
+  color: #fff;
+}

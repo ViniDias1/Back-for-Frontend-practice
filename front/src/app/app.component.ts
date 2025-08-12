@@ -1,73 +1,45 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { DataService } from './services/data.service';
+import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { CardComponent } from './components/card-component/card-component';
+import { ButtonComponent } from './components/button-component/button.component';
+import { SearchComponent } from './components/search-component/search.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    CardComponent,
+    ButtonComponent,
+    SearchComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  title = 'Painéis Sabia';
-
+export class AppComponent {
+  queryParamsSubscription: Subscription | undefined;
   sabiaPaineis: any[] = [];
-  errorMessage: string = '';
+  filteredPaineis: any[] = [];
+
   showingInternetPanels: boolean = false;
-  private queryParamsSubscription: Subscription | undefined;
-
-  private readonly dataService = inject(DataService);
-  private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly router = inject(Router);
-
-  ngOnInit() {
-    this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe(
-      (params) => {
-        const internetParam = params['internet'];
-        this.showingInternetPanels = internetParam === 'true';
-        this.loadPanels(this.showingInternetPanels ? true : undefined);
-      }
-    );
-  }
-
-  ngOnDestroy(): void {
-    if (this.queryParamsSubscription) {
-      this.queryParamsSubscription.unsubscribe();
-    }
-  }
-
-  loadPanels(onlyInternet?: boolean) {
-    this.errorMessage = '';
-    this.sabiaPaineis = [];
-
-    this.dataService.getSabiaPaineis(onlyInternet).subscribe({
-      next: (data) => {
-        this.sabiaPaineis = data;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar painéis:', err);
-        this.errorMessage =
-          'Não foi possível carregar os painéis. Verifique a conexão do BFF com o PocketBase.';
-      },
-    });
+  onSearchResult(paineis: any[]) {
+    this.filteredPaineis = paineis;
   }
 
   showAllPanels() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: { internet: null },
-      queryParamsHandling: 'merge',
-    });
+    this.filteredPaineis = [];
+    this.showingInternetPanels = false;
   }
 
   showInternetPanels() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: { internet: true },
-      queryParamsHandling: 'merge',
-    });
+    this.filteredPaineis = [];
+    this.showingInternetPanels = true;
+  }
+
+  painelLoader(onlyInternet: boolean) {
+    this.showingInternetPanels = onlyInternet;
   }
 }
