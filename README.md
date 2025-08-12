@@ -14,7 +14,6 @@ Este repositório demonstra a aplicação do padrão **Backend-for-Frontend (BFF
 
 ### Back-for-Frontend-practice/
 
-> <br>
 > ├── frontend-angular     - Aplicação Angular (interface do usuário)
 > <br>
 > ├── bff-nitro           - Backend-for-Frontend com Nitro
