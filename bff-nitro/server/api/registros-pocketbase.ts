@@ -1,7 +1,10 @@
-import { getPocketBaseInstance } from "../utils/pocketBaseInstance"; // Importe a função
+import { getPocketBaseInstance } from "../utils/pocketBaseInstance";
 
 export default defineEventHandler(async (event) => {
   const collectionName = "sabia_paineis";
+  const query = getQuery(event);
+  const page = query.page ? Number(query.page) : 1;
+  const perPage = query.perPage ? Number(query.perPage) : 10;
 
   try {
     const pb = await getPocketBaseInstance();
@@ -18,28 +21,19 @@ export default defineEventHandler(async (event) => {
           : ""
       }`;
     }
-
-    const resultList = await pb.collection(collectionName).getList(1, 7, {
-      sort: "-id",
-      filter: filterString,
-    });
-
-    return resultList;
-  } catch (error: any) {
-    if (error.message.includes("Configuração do PocketBase incompleta")) {
-      throw createError({ statusCode: 500, statusMessage: error.message });
-    }
-    if (error.message.includes("Erro na autenticação")) {
-      throw createError({
-        statusCode: 401,
-        message: "Credenciais de autenticação inválidas.",
+    const resultList = await pb
+      .collection(collectionName)
+      .getList(page, perPage, {
+        sort: "-id",
+        filter: filterString,
       });
-    }
+    return resultList;
+  } catch (error) {
+    console.error("Erro ao buscar registros:", error);
 
     throw createError({
       statusCode: 500,
-
-      message: `Erro ao buscar registros da coleção '${collectionName}': ${error.message}`,
+      statusMessage: "Erro ao buscar registros",
     });
   }
 });

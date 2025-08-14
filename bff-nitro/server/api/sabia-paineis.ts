@@ -5,14 +5,6 @@ export default defineEventHandler(async (event) => {
   const { pocketBaseUrl, pocketBaseEmail, pocketBasePassword } =
     useRuntimeConfig(event);
 
-  if (!pocketBaseUrl || !pocketBaseEmail || !pocketBasePassword) {
-    throw createError({
-      statusCode: 500,
-      message:
-        "Variáveis de ambiente do PocketBase não configuradas corretamente.",
-    });
-  }
-
   try {
     const pb = new PocketBase(pocketBaseUrl);
     await pb
@@ -36,19 +28,11 @@ export default defineEventHandler(async (event) => {
       sort: "-id",
       filter,
     });
-  } catch (error: any) {
-    if (
-      error.status === 400 &&
-      error.response?.message === "Failed to authenticate."
-    ) {
-      throw createError({
-        statusCode: 401,
-        message: "Credenciais de autenticação inválidas.",
-      });
-    }
+  } catch (error) {
+    console.error("Erro ao buscar registros:", error);
     throw createError({
       statusCode: 500,
-      message: `Erro ao buscar registros da coleção 'sabia_paineis': ${error.message}`,
+      statusMessage: "Erro ao buscar registros",
     });
   }
 });
