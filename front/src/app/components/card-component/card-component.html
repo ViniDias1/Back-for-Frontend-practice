@@ -13,8 +13,14 @@
     @for (painel of (filteredPaineis.length > 0 ? filteredPaineis :
     sabiaPaineis); track painel.id) {
     <div class="panel-card">
-      <h3>{{ painel.title }}</h3>
-
+      <div class="card-title">
+        <p>
+          @if(painel.authentication ?? false) {
+          <img src="????" alt="Lock info" class="lock-icon">
+          }
+        </p>
+        <h3>{{ painel.title }}</h3>
+      </div>
       @if (painel.image) {
       <div class="panel-image">
         <img [src]="'http://localhost:3000/api/files/' + painel.collectionId + '/' + painel.id + '/' + painel.image"
@@ -37,10 +43,6 @@
           <span [ngClass]="painel.internet ? 'internet-yes' : 'internet-no'">
             {{ painel.internet ? 'Sim' : 'Não' }}
           </span>
-        </p>
-        <p>
-          <strong>Autenticação Necessária:</strong> {{ painel.authentication ?
-          'Sim' : 'Não' }}
         </p>
         <p><strong>Embutível:</strong> {{ painel.embedded ? 'Sim' : 'Não' }}</p>
       </div>

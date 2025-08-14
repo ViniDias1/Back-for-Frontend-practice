@@ -13,6 +13,20 @@
   text-align: center;
 }
 
+.card-title{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  justify-content: space-between;
+}
+
+.lock-icon {
+  width: 20px;
+  height: 20px;
+}
+
 .loading-message {
   background-color: #e0f7fa;
   color: #00796b;

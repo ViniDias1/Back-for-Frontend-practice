@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
       }`;
     }
 
-    return await pb.collection("sabia_paineis").getList(1, 7, {
+    return await pb.collection("sabia_paineis").getList(1, 10, {
       sort: "-id",
       filter,
     });
