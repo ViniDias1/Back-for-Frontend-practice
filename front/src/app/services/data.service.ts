@@ -9,6 +9,7 @@ import { PocketBasePaginatedResponse } from '../interfaces/PocketBasePaginated.i
 })
 export class DataService {
   private readonly apiUrl = 'http://localhost:3000/api/sabia-paineis';
+  private readonly mockUrl = 'http://localhost:3001/sabia-paineis'; // URL do mock
 
   private readonly http = inject(HttpClient);
 
