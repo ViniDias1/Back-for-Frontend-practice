@@ -36,7 +36,6 @@ export class ButtonComponent implements OnInit, OnDestroy {
   showAllPanels() {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: {},
     });
     this.showAll.emit();
   }
