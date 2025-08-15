@@ -2,37 +2,34 @@ import PocketBase from "pocketbase";
 import { useRuntimeConfig } from "nitropack/runtime";
 
 export default defineEventHandler(async (event) => {
-  const { pocketBaseUrl, pocketBaseEmail, pocketBasePassword } =
-    useRuntimeConfig(event);
+  const { pocketBaseUrl, pocketBasePaineis } = useRuntimeConfig(event);
 
-  try {
-    const pb = new PocketBase(pocketBaseUrl);
-    await pb
-      .collection("_superusers")
-      .authWithPassword(pocketBaseEmail, pocketBasePassword);
+  const query = getQuery(event);
+  const page = query.page ? Number(query.page) : 1;
+  const perPage = query.perPage ? Number(query.perPage) : 10;
 
-    const { internet } = getQuery(event);
-    let filter = "";
+  let filter = "";
 
-    if (internet !== undefined) {
-      filter = `internet = ${
-        typeof internet === "boolean"
-          ? internet
-          : typeof internet === "string"
-          ? internet.toLowerCase()
-          : ""
-      }`;
-    }
+  const pb = new PocketBase(pocketBaseUrl);
 
-    return await pb.collection("sabia_paineis").getList(1, 10, {
+  const { internet } = getQuery(event);
+
+  if (internet !== undefined) {
+    filter = `internet = ${
+      typeof internet === "boolean"
+        ? internet
+        : typeof internet === "string"
+        ? internet.toLowerCase()
+        : ""
+    }`;
+  }
+
+  const paineis = await pb
+    .collection(pocketBasePaineis)
+    .getList(page, perPage, {
       sort: "-id",
       filter,
     });
-  } catch (error) {
-    console.error("Erro ao buscar registros:", error);
-    throw createError({
-      statusCode: 500,
-      statusMessage: "Erro ao buscar registros",
-    });
-  }
+
+  return paineis;
 });
