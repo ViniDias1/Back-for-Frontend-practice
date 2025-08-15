@@ -5,7 +5,8 @@ import PocketBase from "pocketbase";
 let authPromise: Promise<void> | null = null;
 
 export async function authPocketBase(): Promise<PocketBase> {
-  const { pocketBaseEmail, pocketBasePassword } = useRuntimeConfig();
+  const { pocketBaseEmail, pocketBasePassword, pocketBaseAdmin } =
+    useRuntimeConfig();
   const pbInstance = await getPocketBaseInstance();
 
   const isInvalid =
@@ -13,7 +14,7 @@ export async function authPocketBase(): Promise<PocketBase> {
 
   if (isInvalid) {
     authPromise ??= pbInstance
-      .collection("_superusers")
+      .collection(pocketBaseAdmin)
       .authWithPassword(pocketBaseEmail, pocketBasePassword)
       .then(() => {})
       .finally(() => {

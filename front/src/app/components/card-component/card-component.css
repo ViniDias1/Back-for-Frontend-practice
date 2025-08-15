@@ -13,6 +13,20 @@
   text-align: center;
 }
 
+.card-title{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  justify-content: space-between;
+}
+
+.lock-icon {
+  width: 20px;
+  height: 20px;
+}
+
 .loading-message {
   background-color: #e0f7fa;
   color: #00796b;
@@ -25,7 +39,9 @@
 
 .panels-list {
   width: 100%;
+  max-width: 1200px;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
 }

@@ -2,53 +2,34 @@ import PocketBase from "pocketbase";
 import { useRuntimeConfig } from "nitropack/runtime";
 
 export default defineEventHandler(async (event) => {
-  const { pocketBaseUrl, pocketBaseEmail, pocketBasePassword } =
-    useRuntimeConfig(event);
+  const { pocketBaseUrl, pocketBasePaineis } = useRuntimeConfig(event);
 
-  if (!pocketBaseUrl || !pocketBaseEmail || !pocketBasePassword) {
-    throw createError({
-      statusCode: 500,
-      message:
-        "Variáveis de ambiente do PocketBase não configuradas corretamente.",
-    });
+  const query = getQuery(event);
+  const page = query.page ? Number(query.page) : 1;
+  const perPage = query.perPage ? Number(query.perPage) : 10;
+
+  let filter = "";
+
+  const pb = new PocketBase(pocketBaseUrl);
+
+  const { internet } = getQuery(event);
+
+  if (internet !== undefined) {
+    filter = `internet = ${
+      typeof internet === "boolean"
+        ? internet
+        : typeof internet === "string"
+        ? internet.toLowerCase()
+        : ""
+    }`;
   }
 
-  try {
-    const pb = new PocketBase(pocketBaseUrl);
-    await pb
-      .collection("_superusers")
-      .authWithPassword(pocketBaseEmail, pocketBasePassword);
-
-    const { internet } = getQuery(event);
-    let filter = "";
-
-    if (internet !== undefined) {
-      filter = `internet = ${
-        typeof internet === "boolean"
-          ? internet
-          : typeof internet === "string"
-          ? internet.toLowerCase()
-          : ""
-      }`;
-    }
-
-    return await pb.collection("sabia_paineis").getList(1, 7, {
+  const paineis = await pb
+    .collection(pocketBasePaineis)
+    .getList(page, perPage, {
       sort: "-id",
       filter,
     });
-  } catch (error: any) {
-    if (
-      error.status === 400 &&
-      error.response?.message === "Failed to authenticate."
-    ) {
-      throw createError({
-        statusCode: 401,
-        message: "Credenciais de autenticação inválidas.",
-      });
-    }
-    throw createError({
-      statusCode: 500,
-      message: `Erro ao buscar registros da coleção 'sabia_paineis': ${error.message}`,
-    });
-  }
+
+  return paineis;
 });
