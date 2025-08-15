@@ -38,10 +38,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
         this.showingInternetPanels = internetParam === 'true';
         this.loadPaineis(this.showingInternetPanels);
-
-        if (this.searchTerm !== '') {
-          this.onSearch();
-        }
       }
     );
   }
@@ -49,11 +45,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   private loadPaineis(online: boolean): void {
     this.dataService.getSabiaPaineis(online).subscribe((paineis) => {
       this.sabiaPaineis = paineis;
-      this.filteredPaineis = [...paineis];
+      this.onSearch();
     });
   }
 
-  onSearch(): void {
+  onSearch() {
     const term = this.searchTerm.trim().toLowerCase();
 
     if (term) {
@@ -63,7 +59,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     } else {
       this.filteredPaineis = [...this.sabiaPaineis];
     }
-
     this.search.emit(this.filteredPaineis);
   }
 
