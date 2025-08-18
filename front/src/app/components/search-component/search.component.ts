@@ -27,29 +27,35 @@ export class SearchComponent implements OnInit, OnDestroy {
   private queryParamsSubscription?: Subscription;
 
   searchTerm: string = '';
-  sabiaPaineis: any[] = [];
-  filteredPaineis: any[] = [];
-  showingInternetPanels: boolean = false;
+  sabiaPaineis: any[] = []; // A lista "mestre" para a filtragem atual
+  filteredPaineis: any[] = []; // A lista final que será exibida
 
   ngOnInit(): void {
     this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe(
       (params) => {
         const internetParam = params['internet'];
 
-        this.showingInternetPanels = internetParam === 'true';
-        this.loadPaineis(this.showingInternetPanels);
+        let filterState: boolean | null = null;
+        if (internetParam === 'true') {
+          filterState = true;
+        } else if (internetParam === 'false') {
+          filterState = false;
+        }
+
+        this.loadPaineis(filterState);
       }
     );
   }
 
-  private loadPaineis(online: boolean): void {
-    this.dataService.getSabiaPaineis(online).subscribe((paineis) => {
+  private loadPaineis(online: boolean | null): void {
+    const onlyInternet: boolean | undefined = online ?? undefined;
+    this.dataService.getSabiaPaineis(onlyInternet).subscribe((paineis) => {
       this.sabiaPaineis = paineis;
       this.onSearch();
     });
   }
 
-  onSearch() {
+  onSearch(): void {
     const term = this.searchTerm.trim().toLowerCase();
 
     if (term) {
